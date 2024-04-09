@@ -70,6 +70,9 @@ jobs:
           artifact_file=$(ls -1 ./veracode_artifact_directory | head -n 1)
           echo "veracode_artifact=$artifact_file" >> $GITHUB_ENV
 
+      - name: show directory
+        run: |
+          ls -laR
       # run the pipeline scan action
       - name: Veracode Pipeline-Scan
         id: pipeline-scan
