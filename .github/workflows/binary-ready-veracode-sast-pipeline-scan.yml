@@ -69,7 +69,9 @@ jobs:
           github-token: ${{ github.event.client_payload.token }}
           repository: ${{ github.event.client_payload.repository.full_name }}
           run-id: ${{ github.event.client_payload.run_id }}
-
+      - name: show directory
+        run: |
+          ls -laR
       - name: Veracode Pipeline-Scan
         id: pipeline-scan
         uses: veracode/Veracode-pipeline-scan-action@master
