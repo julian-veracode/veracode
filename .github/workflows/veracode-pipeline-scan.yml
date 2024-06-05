@@ -185,7 +185,7 @@ jobs:
           name: 'Veracode Pipeline-Scan Results - Mitigated findings'
 
       - name: Create fixes for java language
-        if: ${{ inputs.language = 'Java' }}
+        if: ${{ inputs.language == 'Java' }}
         uses: Veracode/veracode-fix@main
         with:
           inputFile: 'filtered_results.json'
