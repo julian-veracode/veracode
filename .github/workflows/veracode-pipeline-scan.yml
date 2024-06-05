@@ -184,8 +184,8 @@ jobs:
         with:
           name: 'Veracode Pipeline-Scan Results - Mitigated findings'
 
-      - name: Create fixes for non java language
-        if: ${{ inputs.language != 'Java' }}
+      - name: Create fixes for java language
+        if: ${{ inputs.language = 'Java' }}
         uses: Veracode/veracode-fix@main
         with:
           inputFile: 'filtered_results.json'
@@ -194,6 +194,26 @@ jobs:
           vkey: ${{ secrets.VKEY }}
           source_base_path_1: "com/:src/main/java/com/"
           source_base_path_2: "WEB-INF:src/main/webapp/WEB-INF"
+          language: java
+          cwe: 89,117
+          fixType: 'batch'
+          debug: false
+          prComment: true
+          files: 'changed'
+          codeSuggestion: false
+          createPR: true
+          #repo_owner: ${{ inputs.owner }}
+          #repo_name: ${{ inputs.repo }}
+          #commitHash: ${{ inputs.sha }}
+
+      - name: Create fixes for non java language
+        if: ${{ inputs.language != 'Java' }}
+        uses: Veracode/veracode-fix@main
+        with:
+          inputFile: 'filtered_results.json'
+          token: ${{ inputs.token }}
+          vid: ${{ secrets.VID }}
+          vkey: ${{ secrets.VKEY }}
           language: java
           cwe: 89,117
           fixType: 'batch'
