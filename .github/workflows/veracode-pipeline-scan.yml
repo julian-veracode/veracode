@@ -179,6 +179,11 @@ jobs:
     if: ${{ inputs.create_issue && always() }}
     name: Create Fixes
     steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+          token: ${{ inputs.token }}
       - name: Get scan results
         uses: actions/download-artifact@v4
         with:
