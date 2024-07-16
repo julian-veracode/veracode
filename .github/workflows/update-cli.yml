@@ -3,12 +3,13 @@ on:
   schedule:
       - cron: '0 2 * * *'
   workflow_dispatch:
+
 jobs:
   update-veracode-cli:
     runs-on: ubuntu-latest
     continue-on-error: true
     permissions:
-      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - name: Update Veracode CLI to latest version
@@ -27,6 +28,9 @@ jobs:
             rm -rf LATEST_VERSION
           else
             echo "There is a new version we need to downlaod"
+            git config --global user.name 'veracode'
+            git config --global user.email 'cli@veracode.com'
+            git switch --create cli-update-${latest_version}
             downloadUrl="https://tools.veracode.com/veracode-cli/veracode-cli_${latest_version}_linux_x86.tar.gz"
             echo "Download URL: $downloadUrl"
             curl -sSO $downloadUrl
@@ -35,11 +39,11 @@ jobs:
             rm -rf veracode-cli_${local_version}_linux_x86.tar.gz
             rm -rf LATEST_VERSION
             ls -la
+            echo "COMMIT NEW VERSION (${latest_version})"
+            git add -A
+            git commit -m "Update Veracode CLI to ${latest_version}" 
+            echo "CREATE PR TO DEFAULT BRANCH"
+            gh pr create -B default_branch -H cli-update-${latest_version} --title 'Update Veracode CLI to version ${latest_version}' --body 'Created by Github action'
           fi
-      - name: commit back to repo
-        run: |
-          git config --global user.name 'veracode'
-          git config --global user.email 'cli@veracode.com'
-          git add -A
-          git commit -am "New CLI Version"
-          git push --verbose
+        env:
+          GH_TOKEN: ${{ github.token }}
