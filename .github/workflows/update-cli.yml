@@ -8,9 +8,10 @@ jobs:
   update-veracode-cli:
     runs-on: ubuntu-latest
     continue-on-error: true
-    permissions: all
+    permissions: write-all
     steps:
-      - uses: actions/checkout@v3
+      - name: checout repo
+        uses: actions/checkout@v3
       - name: Update Veracode CLI to latest version
         run: |
           cd helper/cli
