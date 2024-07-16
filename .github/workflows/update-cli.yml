@@ -43,7 +43,7 @@ jobs:
             git add -A
             git commit -m "Update Veracode CLI to ${latest_version}" 
             echo "CREATE PR TO DEFAULT BRANCH"
-            gh pr create -H julian-veracode/cli-update-${latest_version} --title 'Update Veracode CLI to version ${latest_version}' --body 'Created by Github action'
+            gh pr create --title 'Update Veracode CLI to version ${latest_version}' --body 'Created by Github action'
           fi
         env:
           GH_TOKEN: ${{ github.token }}
