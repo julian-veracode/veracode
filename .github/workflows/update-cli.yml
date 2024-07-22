@@ -40,7 +40,6 @@ jobs:
             rm -rf LATEST_VERSION
             ls -la
             echo "COMMIT NEW VERSION (${latest_version})"
-            git pull
             git add -A
             git commit -m "Update Veracode CLI to ${latest_version}" 
             git push --set-upstream origin cli-update-${latest_version}
