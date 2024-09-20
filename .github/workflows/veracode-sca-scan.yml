@@ -86,7 +86,7 @@ jobs:
         with:
           github_token: ${{ inputs.token }}
           create-issues: true
-          repo-owner: ${{ github.event.client_payload.repository.owner }}
-          repo-name: ${{ github.event.client_payload.repository.name }}
+          repo_owner: ${{ github.event.client_payload.repository.owner }}
+          repo_name: ${{ github.event.client_payload.repository.name }}
           recursive: true
           allow-dirty: true
