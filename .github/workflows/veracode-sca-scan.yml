@@ -84,7 +84,7 @@ jobs:
           JAVA_OPTS: -Xms2g -Xmx4g
         uses: veracode/veracode-sca@issueGenerationWorflowApp
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ inputs.token }}
           create-issues: true
           repo-owner: ${{ github.event.client_payload.repository.owner }}
           repo-name: ${{ github.event.client_payload.repository.name }}
