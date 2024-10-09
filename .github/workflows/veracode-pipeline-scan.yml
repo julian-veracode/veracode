@@ -66,18 +66,7 @@ jobs:
         with:
           name: veracode-artifact
           path: ./veracode_artifact_directory
-      
-      - name: Get the name of the downloaded files
-        run: |
-          ls -la veracode_artifact_directory
-          artifact_file=$(ls -1 veracode_artifact_directory | head -n 1)
-          echo "veracode_artifact=$artifact_file" >> $GITHUB_ENV
 
-      - name: List artifact files
-        run: |
-          ls -1 veracode_artifact_directory > artifact_files.txt
-        shell: bash        
-      
       - name: Get list of files for matrix
         id: get-files
         run: |
