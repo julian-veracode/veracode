@@ -100,6 +100,7 @@ jobs:
     steps:
       - name: Debug Matrix Content
         run: |
+          echo "Raw matrix files: ${{ needs.prepare_pipeline_scan.outputs.matrix_files }}"
           echo "Current Matrix: ${{ toJson(matrix) }}"
           echo "Current File: ${{ matrix.file }}"
       # run the pipeline scan action
