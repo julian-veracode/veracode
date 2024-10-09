@@ -89,7 +89,7 @@ jobs:
     name: pipeline scan
     strategy:
       matrix:
-        file: ${{fromJson(needs.prepare_pipeline_scan.outputs.files)}}
+        file: ${{fromJson(steps.prepare_pipeline_scan.outputs.files)}}
 
     steps:
       # run the pipeline scan action
