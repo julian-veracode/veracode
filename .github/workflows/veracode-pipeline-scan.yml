@@ -80,7 +80,7 @@ jobs:
         id: read-artifact-files
         run: |
           cat artifact_files.txt
-          echo "name=files::$(cat artifact_files.txt)" >> $GITHUB_OUTPU
+          echo "name=files::$(cat artifact_files.txt)" >> $GITHUB_OUTPUT
         shell: bash
 
   pipeline_scan:
