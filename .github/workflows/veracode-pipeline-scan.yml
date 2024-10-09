@@ -53,6 +53,8 @@ jobs:
   prepare_pipeline_scan:
     runs-on: ubuntu-latest
     name: prepare pipeline scan
+    outputs:
+      matrix_files: ${{ steps.get-files.outputs.matrix_files }} 
 
     steps:
       - name: checkout repo
@@ -80,9 +82,10 @@ jobs:
         id: get-files
         run: |
           ls -1 veracode_artifact_directory > file_list.txt
-          files=$(cat file_list.txt | jq -R . | jq -s .)
+          files=$(ls -1 veracode_artifact_directory | jq -R . | jq -s .)
           echo "matrix_files=$files" >> $GITHUB_OUTPUT
         shell: bash
+
 
 
   pipeline_scan:
