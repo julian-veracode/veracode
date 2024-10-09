@@ -83,6 +83,7 @@ jobs:
         run: |
           files=$(ls -1 veracode_artifact_directory | jq -R . | jq -s .)
           echo "Files for matrix: $files"
+          files=$(echo $files | jq -c .)  # Compact the JSON array to a single line
           echo "matrix_files=$files" >> $GITHUB_OUTPUT
         shell: bash
 
