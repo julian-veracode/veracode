@@ -82,8 +82,8 @@ jobs:
         id: get-files
         run: |
           ls -1 veracode_artifact_directory > file_list.txt
-          files=$(ls -1 veracode_artifact_directory | tr '\n' ',' | sed 's/,$//')
-          json_array="[$(echo $files | | jq -R . | jq -s .)"
+          files=$(ls -1 veracode_artifact_directory | jq -R . | jq -s .)
+          json_array="[$(echo $files | sed 's/,/\", \"/g')]"
           echo "Files for matrix: $files"
           echo "matrix_files=$json_array" >> $GITHUB_OUTPUT
         shell: bash
