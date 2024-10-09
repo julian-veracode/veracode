@@ -76,20 +76,21 @@ jobs:
           ls -1 veracode_artifact_directory > artifact_files.txt
         shell: bash        
       
-      - name: Read artifact files from list
-        id: read-artifact-files
+      - name: Get list of files for matrix
+        id: get-files
         run: |
-          cat artifact_files.txt
-          echo "name=files::$(cat artifact_files.txt)" >> $GITHUB_OUTPUT
+          ls -1 your_directory/*.txt > file_list.txt
+          files=$(cat file_list.txt | jq -R . | jq -s .)
+          echo "matrix_files=$files" >> $GITHUB_OUTPUT
         shell: bash
 
-  pipeline_scan:
+
+  ppipeline_scan:
     runs-on: ubuntu-latest
     needs: prepare_pipeline_scan
-    name: pipeline scan
     strategy:
-      matrix:
-        file: ${{fromJson(steps.prepare_pipeline_scan.outputs.files)}}
+          matrix:
+            file: ${{fromJson(needs.prepare_pipeline_scan.outputs.matrix_files)}}
 
     steps:
       # run the pipeline scan action
@@ -102,7 +103,7 @@ jobs:
           veracode_policy_name: ${{ inputs.policy_name }}
           file: ./veracode_artifact_directory/${{ matrix.file }}
           fail_build: ${{ inputs.break_build_policy_findings }}
-
+    
       - name: Veracode Pipeline Results
         if: always()
         id: prepare-results
