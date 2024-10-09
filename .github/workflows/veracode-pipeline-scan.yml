@@ -79,7 +79,7 @@ jobs:
       - name: Get list of files for matrix
         id: get-files
         run: |
-          ls -1 your_directory/*.txt > file_list.txt
+          ls -1 veracode_artifact_directory > file_list.txt
           files=$(cat file_list.txt | jq -R . | jq -s .)
           echo "matrix_files=$files" >> $GITHUB_OUTPUT
         shell: bash
