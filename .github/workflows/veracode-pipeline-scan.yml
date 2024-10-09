@@ -83,8 +83,8 @@ jobs:
         run: |
           ls -1 veracode_artifact_directory > file_list.txt
           files=$(ls -1 veracode_artifact_directory | jq -R . | jq -s .)
-          echo $files
-          echo "matrix_files=$files" >> $GITHUB_OUTPUT
+          echo "Files for matrix: $files"
+          printf "matrix_files=%s\n" "$files" >> $GITHUB_OUTPUT
         shell: bash
 
 
@@ -97,6 +97,9 @@ jobs:
         file: ${{fromJson(needs.prepare_pipeline_scan.outputs.matrix_files)}}
 
     steps:
+      - name: show Github Output
+        run: |
+          echo $GITHUB_OUTPUT
       # run the pipeline scan action
       - name: Veracode Pipeline-Scan
         id: pipeline-scan
