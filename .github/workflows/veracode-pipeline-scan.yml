@@ -86,7 +86,7 @@ jobs:
           # Format as a JSON array
           json_array="[$(echo $files | sed 's/,/\", \"/g')]"
           echo "Files for matrix: $files"
-          printf "matrix_files=%s\n" "$files" >> $GITHUB_OUTPUT
+          echo "matrix_files=$json_array" >> $GITHUB_OUTPUT
         shell: bash
 
 
