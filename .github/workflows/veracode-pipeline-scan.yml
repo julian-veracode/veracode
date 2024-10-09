@@ -67,7 +67,8 @@ jobs:
       
       - name: Get the name of the downloaded files
         run: |
-          artifact_file=$(ls -1 ./veracode_artifact_directory | head -n 1)
+          ls -la
+          artifact_file=$(ls -1 veracode//veracode_artifact_directory | head -n 1)
           echo "veracode_artifact=$artifact_file" >> $GITHUB_ENV
 
       - name: List artifact files
