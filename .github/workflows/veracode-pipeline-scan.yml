@@ -83,6 +83,7 @@ jobs:
         run: |
           ls -1 veracode_artifact_directory > file_list.txt
           files=$(ls -1 veracode_artifact_directory | jq -R . | jq -s .)
+          echi $files
           echo "matrix_files=$files" >> $GITHUB_OUTPUT
         shell: bash
 
