@@ -4,7 +4,7 @@ run-name: Static Code Analysis - ${{ github.event.client_payload.repository.name
 
 concurrency:
   group: ${{ github.event.client_payload.event_type }}-${{ github.event.client_payload.repository.name }}-${{ github.event.client_payload.repository.branch }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 on:
   repository_dispatch:
