@@ -73,12 +73,13 @@ jobs:
 
       - name: List artifact files
         run: |
-          ls -1 ./veracode_artifact_directory > artifact_files.txt
+          ls -1 veracode_artifact_directory > artifact_files.txt
         shell: bash        
       
       - name: Read artifact files from list
         id: read-artifact-files
         run: |
+          cat artifact_files.txt
           echo "::set-output name=files::$(cat artifact_files.txt)"
         shell: bash
 
@@ -88,7 +89,7 @@ jobs:
     name: pipeline scan
     strategy:
       matrix:
-        file: ${{fromJson(needs.create-scan-artifacts.outputs.files)}}
+        file: ${{fromJson(needs.prepare_pipeline_scan.outputs.files)}}
 
     steps:
       # run the pipeline scan action
