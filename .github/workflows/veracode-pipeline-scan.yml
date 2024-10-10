@@ -151,7 +151,7 @@ jobs:
           source-base-path-2: 'WEB-INF:src/main/webapp/WEB-INF'
 
       - name: Convert pipeline scan output to SARIF format for non java language
-        if: ${{ inputs.language != 'Java' inputs.create_code_scanning_alert && always()}}
+        if: ${{ inputs.language != 'Java' && inputs.create_code_scanning_alert && always()}}
         uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
         with:
           pipeline-results-json: filtered_results.json
@@ -174,7 +174,7 @@ jobs:
 #          name: 'Veracode Pipeline-Scan Results - Mitigated findings'
 
       - name: Create flaws as issues for java language
-        if: ${{ inputs.language == 'Java' inputs.create_issue && always() }}
+        if: ${{ inputs.language == 'Java' && inputs.create_issue && always() }}
         uses: veracode/veracode-flaws-to-issues@v2.2.24
         with:
           scan-results-json: 'filtered_results.json'
@@ -186,7 +186,7 @@ jobs:
           source_base_path_2: 'WEB-INF:src/main/webapp/WEB-INF'
 
       - name: Create flaws as issues for non java language
-        if: ${{ inputs.language != 'Java' inputs.create_issue && always() }}
+        if: ${{ inputs.language != 'Java' && inputs.create_issue && always() }}
         uses: veracode/veracode-flaws-to-issues@v2.2.24
         with:
           scan-results-json: 'filtered_results.json'
