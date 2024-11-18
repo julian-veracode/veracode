@@ -142,9 +142,10 @@ jobs:
 #        with:
 #          name: "Veracode Pipeline-Scan Results - Mitigated findings"
 
-      - name: Convert pipeline scan output to SARIF format for java language
-        if: ${{ inputs.language == 'Java' && inputs.create_code_scanning_alert && always() }}
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
+      - name: Convert pipeline scan output to SARIF format #for java language
+#       if: ${{ inputs.language == 'Java' && inputs.create_code_scanning_alert && always() }}
+        if: ${{ inputs.create_code_scanning_alert && always() }}
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@autoRewritePath
         with:
           pipeline-results-json: filtered_results.json
           output-results-sarif: veracode-results.sarif
@@ -153,20 +154,20 @@ jobs:
           commitSHA: ${{ inputs.sha }}
           ref: ${{ inputs.ref }}
           githubToken: ${{ inputs.token }}
-          source-base-path-1: 'com/:src/main/java/com/'
-          source-base-path-2: 'WEB-INF:src/main/webapp/WEB-INF'
-
-      - name: Convert pipeline scan output to SARIF format for non java language
-        if: ${{ inputs.language != 'Java' && inputs.create_code_scanning_alert && always()}}
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
-        with:
-          pipeline-results-json: filtered_results.json
-          output-results-sarif: veracode-results.sarif
-          repo_owner: ${{ inputs.owner }}
-          repo_name: ${{ inputs.repo }}
-          commitSHA: ${{ inputs.sha }}
-          ref: ${{ inputs.ref }}
-          githubToken: ${{ inputs.token }}
+#          source-base-path-1: 'com/:src/main/java/com/'
+#          source-base-path-2: 'WEB-INF:src/main/webapp/WEB-INF'
+#
+#      - name: Convert pipeline scan output to SARIF format for non java language
+#        if: ${{ inputs.language != 'Java' && inputs.create_code_scanning_alert && always()}}
+#        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.3
+#        with:
+#          pipeline-results-json: filtered_results.json
+#          output-results-sarif: veracode-results.sarif
+#          repo_owner: ${{ inputs.owner }}
+#          repo_name: ${{ inputs.repo }}
+#          commitSHA: ${{ inputs.sha }}
+#          ref: ${{ inputs.ref }}
+#          githubToken: ${{ inputs.token }}
 
 #  create-issues:
 #    needs: pipeline_scan
