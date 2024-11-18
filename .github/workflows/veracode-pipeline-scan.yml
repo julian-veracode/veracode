@@ -174,23 +174,23 @@ jobs:
 #          name: 'Veracode Pipeline-Scan Results - Mitigated findings'
 
       - name: Create flaws as issues for java language
-        if: ${{ inputs.language == 'Java' && inputs.create_issue && always() }}
-        uses: veracode/veracode-flaws-to-issues@v2.2.24
+#        if: ${{ inputs.language == 'Java' && inputs.create_issue && always() }}
+        uses: veracode/veracode-flaws-to-issues@autoRewritePath
         with:
           scan-results-json: 'filtered_results.json'
           repo_owner: ${{ inputs.owner }}
           github-token: ${{ inputs.token }}
           repo_name: ${{ inputs.repo }}
           commitHash: ${{ inputs.sha }}
-          source_base_path_1: 'com/:src/main/java/com/'
-          source_base_path_2: 'WEB-INF:src/main/webapp/WEB-INF'
+#          source_base_path_1: 'com/:src/main/java/com/'
+#          source_base_path_2: 'WEB-INF:src/main/webapp/WEB-INF'
 
-      - name: Create flaws as issues for non java language
-        if: ${{ inputs.language != 'Java' && inputs.create_issue && always() }}
-        uses: veracode/veracode-flaws-to-issues@v2.2.24
-        with:
-          scan-results-json: 'filtered_results.json'
-          repo_owner: ${{ inputs.owner }}
-          repo_name: ${{ inputs.repo }}
-          github-token: ${{ inputs.token }}
-          commitHash: ${{ inputs.sha }}
+#      - name: Create flaws as issues for non java language
+#        if: ${{ inputs.language != 'Java' && inputs.create_issue && always() }}
+#        uses: veracode/veracode-flaws-to-issues@v2.2.24
+#        with:
+#          scan-results-json: 'filtered_results.json'
+#          repo_owner: ${{ inputs.owner }}
+#          repo_name: ${{ inputs.repo }}
+#          github-token: ${{ inputs.token }}
+#          commitHash: ${{ inputs.sha }}
