@@ -161,6 +161,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Create issues
     steps:
+       # we need to code to find the correct file path in case of Java apps 
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.owner }}/${{ inputs.repo }}
+          ref: ${{ inputs.ref }}
+          token: ${{ inputs.token }}
       - name: Get flaw file
         uses: actions/download-artifact@v4
         with:
@@ -168,7 +174,7 @@ jobs:
           path: /tmp
 
       - name: Create flaws as issues for java language
-        if: ${{ inputs.language == 'Java' }}
+#        if: ${{ inputs.language == 'Java' }}
         uses: veracode/veracode-flaws-to-issues@v2.2.24
         with:
           scan-results-json: '/tmp/policy_flaws.json'
@@ -176,15 +182,15 @@ jobs:
           repo_name: ${{ inputs.repo }}
           github-token: ${{ inputs.token }}
           commitHash: ${{ inputs.sha }}
-          source_base_path_1: 'com/:src/main/java/com/'
-          source_base_path_2: 'WEB-INF:src/main/webapp/WEB-INF'
-
-      - name: Create flaws as issues for non java language
-        if: ${{ inputs.language != 'Java' }}
-        uses: veracode/veracode-flaws-to-issues@v2.2.24
-        with:
-          scan-results-json: '/tmp/policy_flaws.json'
-          repo_owner: ${{ inputs.owner }}
-          repo_name: ${{ inputs.repo }}
-          github-token: ${{ inputs.token }}
-          commitHash: ${{ inputs.sha }}
+#          source_base_path_1: 'com/:src/main/java/com/'
+#          source_base_path_2: 'WEB-INF:src/main/webapp/WEB-INF'
+#
+#      - name: Create flaws as issues for non java language
+#        if: ${{ inputs.language != 'Java' }}
+#        uses: veracode/veracode-flaws-to-issues@v2.2.24
+#        with:
+#          scan-results-json: '/tmp/policy_flaws.json'
+#          repo_owner: ${{ inputs.owner }}
+#          repo_name: ${{ inputs.repo }}
+#          github-token: ${{ inputs.token }}
+#          commitHash: ${{ inputs.sha }}
