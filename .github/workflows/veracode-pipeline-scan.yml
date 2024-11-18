@@ -179,7 +179,7 @@ jobs:
 #        with:
 #          name: 'Veracode Pipeline-Scan Results - Mitigated findings'
 
-      - name: Create flaws as issues for java language
+      - name: Create flaws as issues #for java language
 #        if: ${{ inputs.language == 'Java' && inputs.create_issue && always() }}
         uses: veracode/veracode-flaws-to-issues@autoRewritePath
         with:
