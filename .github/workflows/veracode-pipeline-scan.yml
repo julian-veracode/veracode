@@ -181,6 +181,7 @@ jobs:
 
       - name: Create flaws as issues #for java language
 #        if: ${{ inputs.language == 'Java' && inputs.create_issue && always() }}
+        if: ${{ inputs.create_issue && always() }}
         uses: veracode/veracode-flaws-to-issues@autoRewritePath
         with:
           scan-results-json: 'filtered_results.json'
