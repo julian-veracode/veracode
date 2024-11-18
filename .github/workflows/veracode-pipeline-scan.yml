@@ -87,8 +87,11 @@ jobs:
 
     steps:
       # we need to code to find the correct file path in case of Java apps 
-      - name: checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repo }}
+          ref: ${{ inputs.ref }}
+          token: ${{ inputs.token }}
       # get the compiled binary from a previous job
       - name: get archive
         uses: actions/download-artifact@v4
