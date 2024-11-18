@@ -173,7 +173,7 @@ jobs:
           name: 'policy-flaws'
           path: /tmp
 
-      - name: Create flaws as issues for java language
+      - name: Create flaws as issues #for java language
 #        if: ${{ inputs.language == 'Java' }}
         uses: veracode/veracode-flaws-to-issues@v2.2.24
         with:
