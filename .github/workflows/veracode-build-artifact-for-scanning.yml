@@ -39,8 +39,8 @@ jobs:
       repository: ${{ inputs.repository }}
       ref: ${{ inputs.ref }}
       token: ${{ inputs.token }}
-      build_runs_on: ${{ inputs.build_runs_on }}
-      build_packager_image: ${{ inputs.build_packager_image }}
+      #build_runs_on: ${{ inputs.build_runs_on }}
+      #build_packager_image: ${{ inputs.build_packager_image }}
       build_predependency_command: ${{ inputs.build_predependency_command }}
       ruby_version: ${{ inputs.ruby_version }}
       bundle_version: ${{ inputs.bundle_version }}
