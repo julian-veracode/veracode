@@ -15,7 +15,9 @@ on:
   
 jobs:
   build:
-    runs-on: veracode/scm-packaging:3.0.0
+    runs-on: ubuntu-latest
+    container:
+      image: veracode/scm-packaging:3.0.0
     steps:
     - uses: actions/checkout@v4
       with:
