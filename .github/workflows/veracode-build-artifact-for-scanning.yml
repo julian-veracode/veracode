@@ -24,12 +24,12 @@ on:
       #build_predependency_command:
       #  required: true
       #  type: string
-      ruby_version:
-        required: true
-        type: string
-      bundle_version:
-        required: true
-        type: string
+      #ruby_version:
+      #  required: true
+      #  type: string
+      #bundle_version:
+      #  required: true
+      #  type: string
   
 jobs:
   build:
