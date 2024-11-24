@@ -21,9 +21,9 @@ on:
       #build_packager_image:
       #  required: true
       #  type: string
-      build_predependency_command:
-        required: true
-        type: string
+      #build_predependency_command:
+      #  required: true
+      #  type: string
       ruby_version:
         required: true
         type: string
