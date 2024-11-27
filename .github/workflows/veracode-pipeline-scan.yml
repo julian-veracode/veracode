@@ -105,8 +105,9 @@ jobs:
           echo "Current File: ${{ matrix.file }}"
       # run the pipeline scan action
       - name: Veracode Pipeline-Scan
+        if: always()
         id: pipeline-scan
-        uses: veracode/Veracode-pipeline-scan-action@noError
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.16
         with:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
