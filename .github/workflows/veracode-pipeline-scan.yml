@@ -119,6 +119,7 @@ jobs:
           json_output: true
           json_output_file: ${{ strategy.job-index }}-results.json
           filtered_json_output_file: ${{ strategy.job-index }}-filtered_results.json
+          artifact_name: ${{ matrix.file }}
           debug: 1
         continue-on-error: true
     
