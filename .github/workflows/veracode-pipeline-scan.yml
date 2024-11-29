@@ -163,39 +163,38 @@ jobs:
           repo_name: ${{ inputs.repo }}
           commitHash: ${{ inputs.sha }}
 
-      - name: Set Output
+      - name: Set job status
         if: success()
-        run: echo "status=success" >> $GITHUB_ENV
-      - name: Set Output
+        run: echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: Set job status
         if: failure()
-        run: echo "status=failure" >> $GITHUB_ENV
-      - name: Save Job Status
-        id: save-status
-        run: echo "::set-output name=status::${{ env.status }}"
-    outputs:
-      status: ${{ steps.save-status.outputs.status }}
+        run: echo "status=failure" >> $GITHUB_OUTPUT
 
   update-checks-status:
     runs-on: ubuntu-latest
     needs: pipeline_scan
+    if: always()
     steps:
-      - name: Count Passed and Failed Jobs
+      - name: Count passed and failed jobs
         id: count-statuses
         run: |
-          echo "Total jobs: ${{ toJSON(needs) }}"
+          # Initialize counters
           success_count=0
           failure_count=0
-          for job in ${{ toJSON(needs) }}; do
-            status=$(echo $job | jq -r '.result.status')
+
+          # Loop through each job in the matrix
+          for job in ${{ toJSON(pipeline_scan.needs) }}; do
+            status=$(echo $job | jq -r '.job.result.status')
             if [ "$status" = "success" ]; then
-              success_count=$((success_count+1))
+              success_count=$((success_count + 1))
             elif [ "$status" = "failure" ]; then
-              failure_count=$((failure_count+1))
+              failure_count=$((failure_count + 1))
             fi
           done
-          echo "success_count=${success_count}" >> $GITHUB_ENV
-          echo "failure_count=${failure_count}" >> $GITHUB_ENV
-        shell: bash
+
+          echo "${success_count}" "Success count."  
+          echo "${failure_count}"  count. >>
       - name: Update Status Check
         if: always()
         run: |
