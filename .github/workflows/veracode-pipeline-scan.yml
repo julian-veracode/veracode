@@ -121,7 +121,7 @@ jobs:
           filtered_json_output_file: ${{ strategy.job-index }}-filtered_results.json
           artifact_name: ${{ matrix.file }}
           debug: 1
-        continue-on-error: true
+        #continue-on-error: true
     
       - name: Veracode Pipeline Results
         if: always()
