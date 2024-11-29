@@ -126,7 +126,7 @@ jobs:
       - name: Veracode Pipeline Results
         if: always()
         id: prepare-results
-        uses: Veracode/github-actions-integration-helper@v0.1.3
+        uses: Veracode/github-actions-integration-helper@scanMultipleArtifacts
         with:
           action: 'preparePipelineResults'
           token: ${{ inputs.token }}
@@ -138,13 +138,14 @@ jobs:
           fail_checks_on_policy: ${{ inputs.break_build_policy_findings }}
           fail_checks_on_error: ${{ inputs.break_build_on_error }} 
           filter_mitigated_flaws: ${{ inputs.filter_mitigated_flaws }}
+          filtered_results_file: ${{ strategy.job-index }}-filtered_results.json
 
 
       - name: Convert pipeline scan output to SARIF format
         if: ${{ inputs.create_code_scanning_alert && always() }}
         uses: Veracode/veracode-pipeline-scan-results-to-sarif@autoRewritePath
         with:
-          pipeline-results-json: ${{ strategy.job-index }}-filtered_results.json
+          pipeline-results-json: mitigated_${{ strategy.job-index }}-filtered_results.json
           output-results-sarif: veracode-results.sarif
           repo_owner: ${{ inputs.owner }}
           repo_name: ${{ inputs.repo }}
@@ -156,7 +157,7 @@ jobs:
         if: ${{ inputs.create_issue && always() }}
         uses: veracode/veracode-flaws-to-issues@autoRewritePath
         with:
-          scan-results-json: ${{ strategy.job-index }}-filtered_results.json
+          scan-results-json: mitigated_${{ strategy.job-index }}-filtered_results.json
           repo_owner: ${{ inputs.owner }}
           github-token: ${{ inputs.token }}
           repo_name: ${{ inputs.repo }}
