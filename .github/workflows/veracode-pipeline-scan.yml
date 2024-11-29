@@ -163,3 +163,43 @@ jobs:
           repo_name: ${{ inputs.repo }}
           commitHash: ${{ inputs.sha }}
 
+      - name: Set Output
+        if: success()
+        run: echo "status=success" >> $GITHUB_ENV
+      - name: Set Output
+        if: failure()
+        run: echo "status=failure" >> $GITHUB_ENV
+      - name: Save Job Status
+        id: save-status
+        run: echo "::set-output name=status::${{ env.status }}"
+    outputs:
+      status: ${{ steps.save-status.outputs.status }}
+
+  update-checks-status:
+    runs-on: ubuntu-latest
+    needs: pipeline_scan
+    steps:
+      - name: Count Passed and Failed Jobs
+        id: count-statuses
+        run: |
+          echo "Total jobs: ${{ toJSON(needs) }}"
+          success_count=0
+          failure_count=0
+          for job in ${{ toJSON(needs) }}; do
+            status=$(echo $job | jq -r '.result.status')
+            if [ "$status" = "success" ]; then
+              success_count=$((success_count+1))
+            elif [ "$status" = "failure" ]; then
+              failure_count=$((failure_count+1))
+            fi
+          done
+          echo "success_count=${success_count}" >> $GITHUB_ENV
+          echo "failure_count=${failure_count}" >> $GITHUB_ENV
+        shell: bash
+      - name: Update Status Check
+        if: always()
+        run: |
+          echo "do something"
+        
+      
+
