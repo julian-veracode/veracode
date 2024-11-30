@@ -182,17 +182,17 @@ jobs:
         run: |
           success_count=0
           failure_count=0
-
-          # Loop through each dependent job in needs context
-          for job in "${{ toJSON(needs) }}" ; do
-            status=$(echo "$job" | jq -r '.result')
+          
+          # Use jq to iterate over the keys in the JSON object
+          echo '${{ toJSON(needs) }}' | jq -c 'to_entries[]' | while read -r job; do
+            status=$(echo "$job" | jq -r '.value.result')
             if [ "$status" = "success" ]; then
               success_count=$((success_count + 1))
             elif [ "$status" = "failure" ]; then
               failure_count=$((failure_count + 1))
             fi
           done
-
+          
           echo "success_count=$success_count" >> $GITHUB_OUTPUT
           echo "failure_count=$failure_count" >> $GITHUB_OUTPUT
       - name: Update Status Check
