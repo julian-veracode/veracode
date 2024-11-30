@@ -184,7 +184,7 @@ jobs:
           failure_count=0
 
           # Loop through each job in the matrix
-          for job in ${{ toJSON(pipeline_scan) }}; do
+          for job in ${{ toJSON(needs) }}; do
             status=$(echo $job | jq -r '.job.result.status')
             if [ "$status" = "success" ]; then
               success_count=$((success_count + 1))
