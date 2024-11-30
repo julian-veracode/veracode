@@ -168,13 +168,10 @@ jobs:
     needs: pipeline_scan
     if: always()
     steps:
-      - name: Count passed and failed jobs
-        id: count-statuses
+      - name: Update cxheck
+        id: update_check_status
         shell: bash
         run: |
-          success_count=0
-          failure_count=0
-          
           # Convert JSON string to a proper format for jq processing
           echo '${{ toJSON(needs) }}' | jq -c 'to_entries[]' | while read -r job; do
             status=$(echo "$job" | jq -r '.value.result')
@@ -183,7 +180,7 @@ jobs:
               success_count=$((success_count + 1))
             elif [ "$status" = "failure" ]; then
               echo "Jobs failed - need checks update"
-              echo "{"status": "completed","conclusion": "failure"}" >> payload.txt
+              echo '{"status": "completed", "conclusion": "failure"}' > payload.txt
               curl -X PATCH \
                 -H "Authorization: Bearer ${{ inputs.token }}" \
                 -H "Accept: application/vnd.github+json" \
