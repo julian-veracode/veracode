@@ -163,19 +163,6 @@ jobs:
           repo_name: ${{ inputs.repo }}
           commitHash: ${{ inputs.sha }}
 
-      - name: Set output for step2
-        if: always()  # Ensures this runs even if step2 fails.
-        run: |
-          if [ $? -eq 0 ]; then
-            echo "step${{ strategy.job-index }}_status=success" >> $GITHUB_ENV
-          else
-            echo "step${{ strategy.job-index }}_status=failure" >> $GITHUB_ENV
-        env:
-          GITHUB_ENV: $GITHUB_ENV
-      - name: Export all outputs
-        run: |
-          echo "step${{ strategy.job-index }}_status=${{ env.step${{ strategy.job-index }}_status }}" >> $GITHUB_OUTPUT
-
   update-checks-status:
     runs-on: ubuntu-latest
     needs: pipeline_scan
