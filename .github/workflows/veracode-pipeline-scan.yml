@@ -182,11 +182,14 @@ jobs:
         run: |
           success_count=0
           failure_count=0
+          echo "Job needs content"
+          echo '${{ toJSON(needs) }}'
+
           
           # Convert JSON string to a proper format for jq processing
           echo '${{ toJSON(needs) }}' | jq -c 'to_entries[]' | while read -r job; do
             status=$(echo "$job" | jq -r '.value.result')
-            echo "Processing job with status: $status"  # Debugging line
+            echo "Processing $job with status: $status"
             if [ "$status" = "success" ]; then
               success_count=$((success_count + 1))
             elif [ "$status" = "failure" ]; then
@@ -197,7 +200,10 @@ jobs:
           # Output results
           echo "success_count=$success_count" >> $GITHUB_OUTPUT
           echo "failure_count=$failure_count" >> $GITHUB_OUTPUT
-          echo $GITHUB_OUTPUT
+          echo "success_count=$success_count" 
+          echo "failure_count=$failure_count" 
+          echo "GITHUB_OUTPUT content:"
+          cat "$GITHUB_OUTPUT"
 
       - name: Update Status Check
         if: always()
