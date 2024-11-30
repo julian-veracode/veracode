@@ -178,9 +178,10 @@ jobs:
     steps:
       - name: Count passed and failed jobs
         id: count-statuses
+        shell: bash
         run: |
-          #success_count=0
-          #failure_count=0
+          success_count=0
+          failure_count=0
 
           # Loop through each dependent job in needs context
           for job in "${{ toJSON(needs) }}" ; do
