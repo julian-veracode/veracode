@@ -76,8 +76,6 @@ jobs:
           echo "matrix_files=$files" >> $GITHUB_OUTPUT
         shell: bash
 
-
-
   pipeline_scan:
     runs-on: ubuntu-latest
     needs: prepare_pipeline_scan
@@ -86,13 +84,12 @@ jobs:
         file: ${{fromJson(needs.prepare_pipeline_scan.outputs.matrix_files)}}
 
     steps:
-      # we need to code to find the correct file path in case of Java apps 
       - uses: actions/checkout@v4
         with:
           repository: ${{ inputs.owner }}/${{ inputs.repo }}
           ref: ${{ inputs.ref }}
           token: ${{ inputs.token }}
-      # get the compiled binary from a previous job
+
       - name: get archive
         uses: actions/download-artifact@v4
         with:
@@ -103,11 +100,11 @@ jobs:
           echo "Raw matrix files: ${{ needs.prepare_pipeline_scan.outputs.matrix_files }}"
           echo "Current Matrix: ${{ matrix }}"
           echo "Current File: ${{ matrix.file }}"
-      # run the pipeline scan action
+
       - name: Veracode Pipeline-Scan
         if: always()
         id: pipeline-scan
-        uses: veracode/Veracode-pipeline-scan-action@noError
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.18
         with:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
@@ -121,12 +118,11 @@ jobs:
           filtered_json_output_file: ${{ strategy.job-index }}-filtered_results.json
           artifact_name: ${{ matrix.file }}
           debug: 1
-        #continue-on-error: true
     
       - name: Veracode Pipeline Results
         if: always()
         id: prepare-results
-        uses: Veracode/github-actions-integration-helper@scanMultipleArtifacts
+        uses: Veracode/github-actions-integration-helper@v0.1.6
         with:
           action: 'preparePipelineResults'
           token: ${{ inputs.token }}
@@ -140,10 +136,9 @@ jobs:
           filter_mitigated_flaws: ${{ inputs.filter_mitigated_flaws }}
           filtered_results_file: ${{ strategy.job-index }}-filtered_results.json
 
-
       - name: Convert pipeline scan output to SARIF format
         if: ${{ inputs.create_code_scanning_alert && always() }}
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@autoRewritePath
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.4
         with:
           pipeline-results-json: mitigated_${{ strategy.job-index }}-filtered_results.json
           output-results-sarif: veracode-results.sarif
@@ -155,7 +150,7 @@ jobs:
 
       - name: Create flaws as issues
         if: ${{ inputs.create_issue && always() }}
-        uses: veracode/veracode-flaws-to-issues@autoRewritePath
+        uses: veracode/veracode-flaws-to-issues@v2.2.25
         with:
           scan-results-json: mitigated_${{ strategy.job-index }}-filtered_results.json
           repo_owner: ${{ inputs.owner }}
@@ -168,7 +163,7 @@ jobs:
     needs: pipeline_scan
     if: always()
     steps:
-      - name: Update cxheck
+      - name: Update check
         id: update_check_status
         shell: bash
         run: |
@@ -176,7 +171,7 @@ jobs:
           echo '${{ toJSON(needs) }}' | jq -c 'to_entries[]' | while read -r job; do
             status=$(echo "$job" | jq -r '.value.result')
             if [ "$status" = "success" ]; then
-              echo "Job scuccess no need to update"
+              echo "Job success no need to update"
               success_count=$((success_count + 1))
             elif [ "$status" = "failure" ]; then
               echo "Jobs failed - need checks update"
@@ -188,6 +183,3 @@ jobs:
                 -d @"payload.txt"
             fi
           done
-          
-      
-
