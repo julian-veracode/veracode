@@ -69,6 +69,7 @@ jobs:
           github-token: ${{ github.event.client_payload.token }}
           repository: ${{ github.event.client_payload.repository.full_name }}
           run-id: ${{ github.event.client_payload.run_id }}
+          path: ./veracode_artifact_directory
 
       - name: Veracode Pipeline-Scan
         id: pipeline-scan
