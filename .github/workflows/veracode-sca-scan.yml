@@ -109,7 +109,7 @@ jobs:
         uses: veracode/veracode-sca@issueGenerationWorflowApp
         with:
           github_token: ${{ github.event.client_payload.token }}
-          create-issues: false
+          create-issues: true
           repo_owner: ${{ github.event.client_payload.repository.owner }}
           repo_name: ${{ github.event.client_payload.repository.name }}
           recursive: true
