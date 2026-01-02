@@ -14,6 +14,7 @@ jobs:
       - name: Update Veracode CLI to latest version
         run: |
           cd helper/cli
+          ls -la
           cliFile=$(ls -1 . | head -n 1)
           echo "Filename: $cliFile"
           local_version="${cliFile#*_}"
@@ -24,6 +25,7 @@ jobs:
           echo "Latest version: $latest_version"
           if [[ "$local_version" == "$latest_version" ]]; then
             echo "We already have the latest version - nothing to do here"
+            ls -la
             rm -rf LATEST_VERSION
           else
             echo "There is a new version we need to downlaod"
