@@ -40,11 +40,12 @@ jobs:
             ls -la
           fi
           ls -la
-          git status --porcelain
+          echo $(git status --porcelain)
       - name: commit back to repo
         run: |
           git config --global user.name 'veracode'
           git config --global user.email 'cli@veracode.com'
+          echo $(git status --porcelain)
           # Check if there are any changes
           if [[ -n "$(git status --porcelain)" ]]; then
             echo "Changes detected — committing and pushing latest CLI."
