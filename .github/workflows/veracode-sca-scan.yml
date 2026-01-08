@@ -98,7 +98,7 @@ jobs:
               fi
               echo "-- Pipfile.lock creation process completed."
             fi
-          elif [ -f pipfile.lock ]; then
+          elif [ -f pipfile.lock ] || [ -f Pipfile.lock ]; then
             echo "- pipfile.lock found need to install pipenv"
             python3 -m pip install --upgrade pip
             python3 -m pip install pipenv
