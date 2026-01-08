@@ -59,6 +59,6 @@ jobs:
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
           createsandbox: true
-          team: 'Demo Team'
+          teams: 'Demo Team'
           sandboxname: GitHub App Scans-${{ github.event.client_payload.repository.branch }}
           failbuild: ${{ github.event.client_payload.user_config.break_build_policy_findings }}
