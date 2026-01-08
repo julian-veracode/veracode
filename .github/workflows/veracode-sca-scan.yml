@@ -102,7 +102,8 @@ jobs:
             echo "- pipfile.lock found need to install pipenv"
             python3 -m pip install --upgrade pip
             python3 -m pip install pipenv
-            pipenv lock -r > requirements.txt
+            pipenv sync --dev
+            pipenv requirements --dev > requirements-dev.txt
           else
             echo "- No requirements files found. Skipping pip install process."
           fi
