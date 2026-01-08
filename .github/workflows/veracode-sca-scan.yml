@@ -122,7 +122,7 @@ jobs:
           repo_name: ${{ github.event.client_payload.repository.name }}
           recursive: true
           allow-dirty: true
-          debug: false
+          debug: true
 
           
 #        uses: veracode/veracode-sca@issueGenerationWorflowApp
