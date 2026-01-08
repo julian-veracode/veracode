@@ -100,8 +100,10 @@ jobs:
             fi
           elif [ -f pipfile.lock ] || [ -f Pipfile.lock ]; then
             echo "- pipfile.lock found need to install pipenv"
-            python3 -m pip install --upgrade pip
-            python3 -m pip install pipenv
+            pipenv lock -r > requirements.txt
+            #python3 -m pip install --upgrade pip
+            #python3 -m pip install pipenv
+            
           else
             echo "- No requirements files found. Skipping pip install process."
           fi
