@@ -78,6 +78,10 @@ jobs:
           fi
           rm -rf veracode-helper
 
+      - name: Install python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
 
       - name: Check for requirements files and create Pipfile.lock
         run: |
@@ -104,12 +108,7 @@ jobs:
             python3 -m pip install pipenv
           else
             echo "- No requirements files found. Skipping pip install process."
-          fi
-
-      - name: Install python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.14' 
+          fi 
 
       - name: Run Veracode SCA
         env:
