@@ -78,10 +78,10 @@ jobs:
           fi
           rm -rf veracode-helper
 
-      - name: Install python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.12.7'
+#      - name: Install python
+#        uses: actions/setup-python@v6
+#        with:
+#          python-version: '3.12.7'
 
       - name: Check for requirements files and create Pipfile.lock
         run: |
