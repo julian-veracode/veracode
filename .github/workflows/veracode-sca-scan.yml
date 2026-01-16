@@ -78,10 +78,20 @@ jobs:
           fi
           rm -rf veracode-helper
 
+      - name: Python version
+        run: |
+          which python3
+          which pip3
+
       - name: Install python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12.7'
+
+      - name: Python version
+        run: |
+          which python3
+          which pip3
 
       - name: Check for pipfile.lock and install pipenv
         run: |
