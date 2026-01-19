@@ -83,10 +83,10 @@ jobs:
           python3 --version
           pip3 --version
 
-#      - name: Install python
-#        uses: actions/setup-python@v6
-#        with:
-#          python-version: '3.12.7'
+      - name: Install python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14.2'
 
       - name: Python version
         run: |
