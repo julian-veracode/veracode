@@ -33,6 +33,8 @@ on:
       - java-policy-scan
       - unidentified-lang-pipeline-scan
       - unidentified-lang-policy-scan
+      - apex-pipeline-scan
+      - apex-policy-scan
 
 jobs:
   register:
