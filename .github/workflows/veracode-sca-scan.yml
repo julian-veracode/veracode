@@ -28,6 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Veracode Component Analysis
     timeout-minutes: 30
+    env:
+      MY_SECRET: ""
 
     steps:
       - uses: actions/checkout@v4
@@ -130,9 +132,19 @@ jobs:
 #            echo "- No requirements files found. Skipping pip install process."
 #          fi 
 
+      - name: Choose secret
+        run: |
+          if [[ "${{ github.event.client_payload.repository.name }}" == "julian-veracode/GitHubApp-no-config" ]]; then
+            echo "MY_SECRET=${{ secrets.SECRET1 }}" >> $GITHUB_ENV
+          elif [[ "${{ github.event.client_payload.repository.name }}" == "julian-veracode/python-test-repo" ]]; then
+            echo "MY_SECRET=${{ secrets.SECRET2 }}" >> $GITHUB_ENV
+          else
+            echo "MY_SECRET=${{ secrets.VERACODE_AGENT_TOKEN }}" >> $GITHUB_ENV
+          fi
+          
       - name: Run Veracode SCA
         env:
-          SRCCLR_API_TOKEN: ${{ secrets.VERACODE_AGENT_TOKEN }}
+          SRCCLR_API_TOKEN: ${{ env.MY_SECRET }}
           JAVA_OPTS: -Xms2g -Xmx4g
         uses: veracode/veracode-sca@issueGenerationWorflowApp
         with:
