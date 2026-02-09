@@ -134,9 +134,9 @@ jobs:
 
       - name: Choose secret
         run: |
-          if [[ "${{ github.event.client_payload.repository.name }}" == "julian-veracode/GitHubApp-no-config" ]]; then
+          if [[ "${{ github.event.client_payload.repository.name }}" == "GitHubApp-no-config" ]]; then
             echo "MY_SECRET=${{ secrets.SECRET1 }}" >> $GITHUB_ENV
-          elif [[ "${{ github.event.client_payload.repository.name }}" == "julian-veracode/python-test-repo" ]]; then
+          elif [[ "${{ github.event.client_payload.repository.name }}" == "python-test-repo" ]]; then
             echo "MY_SECRET=${{ secrets.SECRET2 }}" >> $GITHUB_ENV
           else
             echo "MY_SECRET=${{ secrets.VERACODE_AGENT_TOKEN }}" >> $GITHUB_ENV
