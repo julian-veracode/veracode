@@ -1,4 +1,3 @@
-
 name: Veracode Static Code Analysis
 
 run-name: Static Code Analysis - ${{ github.event.client_payload.repository.name }}
