@@ -56,8 +56,8 @@ jobs:
     name: Build on Linux
     if: contains(needs.build-prepare.outputs.runner_os, 'Linux')
     env:
-      VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
-      VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
+      T-VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
+      T-VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
       T-TEST_SECRET: ${{ secrets.TEST_SECRET }}
 
     steps:
@@ -78,6 +78,7 @@ jobs:
         run: |
           env
           echo "TEST_SECRET: '${{ secrets.TEST_SECRET }}'"
+          echo "Veracode API ID: "${{ secrets.VERACODE_API_ID }}
           if [[ ! -z "${{ inputs.build_predependency_command }}" ]]; then
             echo "Executing Pre-Build Dependency.."
             ${{ inputs.build_predependency_command }}
