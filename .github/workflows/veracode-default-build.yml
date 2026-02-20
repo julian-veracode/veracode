@@ -55,7 +55,6 @@ jobs:
       image: ${{ inputs.build_packager_image }}
     name: Build on Linux
     if: contains(needs.build-prepare.outputs.runner_os, 'Linux')
-    secrets: inherit
     env:
       VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_ID }}
       VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY }}
