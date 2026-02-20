@@ -53,6 +53,7 @@ jobs:
       event_name: ${{ inputs.event_name }}
       default_runs_on: ${{ inputs.default_runs_on }}
       debug: ${{ inputs.debug }}
+    secrets: inherit
 
   build-tsql-package:
     if: ${{ inputs.event_name == 'tsql-pipeline-scan' || inputs.event_name == 'tsql-policy-scan'  || inputs.event_name == 'tsql-sandbox-scan'}}
