@@ -75,6 +75,8 @@ jobs:
         id: application_package_linux
         shell: bash
         run: |
+          env
+          echo "TEST_SECRET: '${{secrets.TEST_SECRET}}'"
           if [[ ! -z "${{ inputs.build_predependency_command }}" ]]; then
             echo "Executing Pre-Build Dependency.."
             ${{ inputs.build_predependency_command }}
