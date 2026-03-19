@@ -24,7 +24,6 @@ jobs:
       head_sha: ${{ github.event.client_payload.sha }}
       repository_owner: ${{ github.event.client_payload.repository.owner }}
       repository_name: ${{ github.event.client_payload.repository.name }}
-      pull_request_num: ${{ github.event.client_payload.pr_number }}
       event_type: ${{ github.event.client_payload.event_type }}
       github_token: ${{ github.event.client_payload.token }}
       run_id: ${{ github.run_id }}
