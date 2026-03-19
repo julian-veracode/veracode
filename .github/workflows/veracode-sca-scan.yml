@@ -152,6 +152,7 @@ jobs:
             helper/cli/*
 
       - name: Set up Python 3.10.14
+        if: ${{ github.event.client_payload.repository.name == 'example-python-pipenv' }}
         uses: actions/setup-python@v6
         with:
           python-version: '3.10'
