@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Verify Veracode API credentials
         id: verify_api_creds
-        uses: veracode/github-actions-integration-helper@v0.1.9
+        uses: ./actions/integration-helper
         with:
           action: validateVeracodeApiCreds
           token: ${{ github.event.client_payload.token }}
@@ -40,11 +40,12 @@ jobs:
           appname: ${{ github.event.client_payload.user_config.profile_name }}
           source_repository: ${{ github.event.client_payload.repository.full_name }}
           check_run_id: ${{ needs.register.outputs.run_id }}
+          platformType: 'ENTERPRISE'
 
       - name: Verify Policy name
         id: verify_policy_name
         if: success()
-        uses: veracode/github-actions-integration-helper@v0.1.9
+        uses: ./actions/integration-helper
         with:
           action: validatePolicyName
           token: ${{ github.event.client_payload.token }}
@@ -58,6 +59,7 @@ jobs:
           start_line: ${{ github.event.client_payload.annotationObj.start_line }}
           end_line: ${{ github.event.client_payload.annotationObj.end_line }}
           break_build_invalid_policy: ${{github.event.client_payload.break_build_invalid_policy }}
+          platformType: 'ENTERPRISE'
 
   prepare_pipeline_scan:
     runs-on: ${{ fromJSON(github.event.client_payload.user_config.default_runs_on) }}
@@ -69,7 +71,7 @@ jobs:
     steps:
       - name: Download artifact
         id: download-artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           github-token: ${{ github.event.client_payload.token }}
           repository: ${{ github.event.client_payload.repository.full_name }}
@@ -102,7 +104,7 @@ jobs:
           token: ${{ github.event.client_payload.token }}
         
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           github-token: ${{ github.event.client_payload.token }}
           repository: ${{ github.event.client_payload.repository.full_name }}
@@ -120,7 +122,7 @@ jobs:
       - name: Veracode Pipeline-Scan
         if: always()
         id: pipeline-scan
-        uses: veracode/Veracode-pipeline-scan-action@v1.0.20
+        uses: ./actions/pipeline-scan
         with:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
@@ -135,11 +137,12 @@ jobs:
           artifact_name: ${{ matrix.file }}
           debug: 1
           workflow_app: true
+          platformType: 'ENTERPRISE'
     
       - name: Veracode Pipeline Results
         if: always()
         id: prepare-results
-        uses: veracode/github-actions-integration-helper@v0.1.9
+        uses: ./actions/integration-helper
         with:
           action: 'preparePipelineResults'
           token: ${{ github.event.client_payload.token }}
@@ -152,10 +155,11 @@ jobs:
           fail_checks_on_error: ${{ github.event.client_payload.user_config.break_build_on_error }} 
           filter_mitigated_flaws: ${{ github.event.client_payload.user_config.filter_mitigated_flaws }}
           filtered_results_file: ${{ strategy.job-index }}-filtered_results.json
+          platformType: 'ENTERPRISE'
 
       - name: Convert pipeline scan output to SARIF format
         if: ${{ github.event.client_payload.user_config.create_code_scanning_alert && always() }}
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v2.0.4
+        uses: ./actions/flaws-to-sarif
         with:
           pipeline-results-json: mitigated_${{ strategy.job-index }}-filtered_results.json
           output-results-sarif: veracode-results.sarif
@@ -167,7 +171,7 @@ jobs:
 
       - name: Create flaws as issues
         if: ${{ github.event.client_payload.user_config.create_issue && always() }}
-        uses: veracode/veracode-flaws-to-issues@v2.2.25
+        uses: ./actions/flaws-to-issues
         with:
           scan-results-json: mitigated_${{ strategy.job-index }}-filtered_results.json
           repo_owner: ${{ github.event.client_payload.repository.owner }}
@@ -206,6 +210,7 @@ jobs:
               curl -X PATCH \
                 -H "Authorization: Bearer ${{ github.event.client_payload.token }}" \
                 -H "Accept: application/vnd.github+json" \
-                https://api.github.com/repos/${{ github.event.client_payload.repository.owner }}/${{ github.event.client_payload.repository.name }}/check-runs/${{ needs.register.outputs.run_id }} \
+                $GITHUB_API_URL/repos/${{ github.event.client_payload.repository.owner }}/${{ github.event.client_payload.repository.name }}/check-runs/${{ needs.register.outputs.run_id }} \
                 -d @"payload.txt"
             done
+       
